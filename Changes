@@ -1,5 +1,8 @@
 Change History:
 
+0.12 (tjmather) 4/22/2002
+- Fixed bug with DTD alternation rules (Steven Allen)
+
 0.11 (tjmather) 4/8/2002
 - Corrected the token abbreviation sub (Philippe Verdret)
 - Added error 170, Element can't be empty (Philippe Verdret)

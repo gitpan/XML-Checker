@@ -204,7 +204,7 @@ sub decode
     }
     # ex. $key = C_31 and $name = 01
     #use warnings;
-    my $dots = "[^()*+?]" x $len;
+    my $dots = "[^()*+?|]" x $len;
     $buf =~ s/($dots)/$s{$1} . ","/ge;
     chop $buf;
 
@@ -785,7 +785,7 @@ use vars qw ( $VERSION $FAIL $INSIGNIF_WS );
 
 BEGIN 
 { 
-    $VERSION = '0.11'; 
+    $VERSION = '0.12'; 
 }
 
 $FAIL = \&print_error;
