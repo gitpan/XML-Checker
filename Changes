@@ -1,6 +1,10 @@
 Change History:
 
-
+0.10 (tjmather) 9/2/2001
+- Fixed bug where checker didn't raise an error where a element
+  that should have only contained sub-elements contained a text
+  element (Michel Rodriguez)
+- Moved XML::DOM::ValParser into correct directory
 
 libxml-enno-1.04 (tjmather) 3/20/2001
 

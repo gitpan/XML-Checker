@@ -223,9 +223,8 @@ sub End
 sub Char
 {
     my ($self, $checker, $str) = @_;
-
-    # Inform the checker that this might be insignificant whitespace
-    $checker->isWS ($str);
+    $checker->fail (149, "Element should only contain sub elements, found text [$str]")
+      unless ($checker->isWS ($str));
 }
 
 package XML::Checker::Context::Mixed;
@@ -1659,11 +1658,16 @@ See definition of L<AttType|http://www.w3.org/TR/REC-xml#NT-AttType>
 
 =back
 
-=head2 150 - 159
+=head2 149 - 159
 
 =over 4
 
 =item *
+
+B<149> - invalid text content [$value]
+
+A text was found in an element that should only include sub-elements
+The text is not made of non-significant whitespace.
 
 B<150> - bad #FIXED attribute value [$value], it should be [$default]
 
@@ -1983,12 +1987,12 @@ This is an alpha release. Almost everything is subject to change.
 
 =head1 AUTHOR
 
-Send bug reports, hints, tips, suggestions to Enno Derksen at
-<F<enno@att.com>>. 
+Enno Derksen is the original author.
+
+Send bug reports, hints, tips, suggestions to T.J. Mather at
+<F<tjmather@tjmather.com>>. 
 
 =head1 SEE ALSO
-
-The home page of XML::Checker at L<http://www.erols.com/enno/checker/index.html>
 
 The XML spec (Extensible Markup Language 1.0) at L<http://www.w3.org/TR/REC-xml>
 

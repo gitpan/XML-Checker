@@ -677,8 +677,10 @@ the same encoding as the orignal XML document.
 
 =head1 AUTHOR
 
-Send bug reports, hints, tips, suggestions to Enno Derksen at
-<F<enno@att.com>>.
+Enno Derksen is the original author.
+
+Send bug reports, hints, tips, suggestions to T.J. Mather at
+<F<tjmather@tjmather.com>>.
 
 =head1 SEE ALSO
 
