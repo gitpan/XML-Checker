@@ -1,3 +1,5 @@
+use warnings;
+use strict;
 #
 #
 # TO DO
@@ -179,7 +181,7 @@ sub Start
     }
     else
     {
-	$checker->fail (157, "unexpected Element [$tag]", 
+      $checker->fail (157, "unexpected Element [$tag]", 
 			ChildElementIndex => $self->{N})
     }
     $self->{N}++;
@@ -192,16 +194,17 @@ sub decode
     my $name = $self->{Name};
     my $buf = $self->{Buf};
 
+    # length of token, in a content model all tokens are the same length
+    my $len = 0;		
     my %s = ();
     while (my ($key, $val) = each %$name)
     {
-	$s{$val->{S}} = $key;
+      $len = length($val->{S}) unless $len;
+      $s{$val->{S}} = $key;
     }
-
-    my ($len) = scalar (keys %$name);
-    $len = length $len;
+    # ex. $key = C_31 and $name = 01
+    #use warnings;
     my $dots = "[^()*+?]" x $len;
-
     $buf =~ s/($dots)/$s{$1} . ","/ge;
     chop $buf;
 
@@ -215,9 +218,15 @@ sub End
     my ($self, $checker) = @_;
     my $re = $self->{RE};
 
-#print "End " . $self->debug . "\n";
-    $checker->fail (154, "bad order of Elements " . $self->decode)
-	unless $self->{Buf} =~ /^$re$/;
+    unless ( $self->{Buf} =~ /\S/ ) {
+      unless ( $self->{Buf} =~ /^$re$/ ) {
+	$checker->fail (170, "Element can't be empty " . $self->decode);
+	return;
+      }
+    }
+    unless ( $self->{Buf} =~ /^$re$/ ) {
+      $checker->fail (154, "bad order of Elements " . $self->decode);
+    }
 }
 
 sub Char
@@ -361,7 +370,6 @@ sub _add	# static
 }
 
 my $IDS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-
 sub _tokenize
 {
     my ($self, $rule) = @_;
@@ -396,15 +404,16 @@ sub _tokenize
     }
     else
     {
-	# Generate RE, convert Term->{N} to hex string a la "(#)", 
-	# e.g. "(03d)". Calculate needed length of hex string first.
-	my $len = 1;
-	for (my $n = $_n - 1; ($n >> 4) > 0; $len++) {}
-
+	# Generate RE, convert Term->{N} to hex string 
+	# e.g. "03d". Calculate needed length of hex string first.
+	my $len = 0;
+	for (my $n = $_n - 1; $n > 0; $len++) {
+	  $n = $n >> 4; 
+	}
 	my $i = 0;
 	for (values %_name)
 	{
-	    $_->{S} = sprintf ("(0${len}lx)", $i++);
+	  $_->{S} = sprintf ("%0${len}lx", $i++);
 #print "tokenized " . $_->{Name} . " num=" . $_->{N} . " to " . $_->{S} . "\n";
 	}
     }
@@ -459,7 +468,7 @@ sub setModel
     return 0 if ($rule !~ /^<a(\d+)>$/);
 
     $self->{Name} = \%_name;
-    $self->{RE} = $_map{$1}->re;
+    $self->{RE} = $_map{$1}->re; 
 
     return 1;
 }
@@ -776,7 +785,7 @@ use vars qw ( $VERSION $FAIL $INSIGNIF_WS );
 
 BEGIN 
 { 
-    $VERSION = '0.09'; 
+    $VERSION = '0.11'; 
 }
 
 $FAIL = \&print_error;
@@ -792,7 +801,7 @@ sub new
     $args{ARule} = {};
     $args{InCDATA} = 0;
 
-#    $args{Debug} = 1;
+    #$args{Debug} = 1;
     bless \%args, $class;
 }
 
@@ -1239,7 +1248,8 @@ sub Entity
 # can be insignificant (i.e. when the ERule is Children or EMPTY)
 sub isWS
 {
-    $INSIGNIF_WS = ($_[1] =~ /^\s*$/);
+  # pverdret: why not /\A\s+\Z/ ???
+  $INSIGNIF_WS = ($_[1] =~ /^\s*$/);
 }
 
 sub isInsignifWS

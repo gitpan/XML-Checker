@@ -1,5 +1,12 @@
 Change History:
 
+0.11 (tjmather) 4/8/2002
+- Corrected the token abbreviation sub (Philippe Verdret)
+- Added error 170, Element can't be empty (Philippe Verdret)
+- Added strict and warnings pragmas (Philippe Verdret)
+- Added two new tests, t/empty_elt.t and t/high_elt_number.t
+    (Philippe Verdret)
+
 0.10 (tjmather) 9/2/2001
 - Fixed bug where checker didn't raise an error where a element
   that should have only contained sub-elements contained a text
