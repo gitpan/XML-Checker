@@ -459,6 +459,11 @@ sub Entity {
 	$expat->{Checker}->Entity(@_);
 }
 
+sub my_final
+{
+        return 1;
+}
+
 1; # package return code
 
 __END__

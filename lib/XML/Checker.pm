@@ -441,7 +441,7 @@ sub setModel
 	    # cp := ( name | choice | seq ) ('?' | '*' | '+')?
 	    $n++ while s/<[ncs](\d+)>([?*+]?)/_add
 	    (C => 'a', N => $_n++, 
-	     S => ($_map{$1}->re . $2))/eg;
+	    S => ($_map{$1}->re . $2))/eg;
 
 	    # choice := '(' ch_l ')'
 	    $n++ while s/\(\s*<[ad](\d+)>\s*\)/_add
@@ -785,7 +785,7 @@ use vars qw ( $VERSION $FAIL $INSIGNIF_WS );
 
 BEGIN 
 { 
-    $VERSION = '0.12'; 
+    $VERSION = '0.13'; 
 }
 
 $FAIL = \&print_error;
@@ -1325,7 +1325,10 @@ This document only describes common topics like error handling
 and the XML::Checker class itself.
 
 WARNING: Not all errors are currently checked. Almost everything is subject to
-change. Some reported errors may not be real errors.
+change. Some reported errors may not be real errors.  For production code,
+it is recommended that you use L<XML::LibXML> or L<XML::GDOME> instead of
+L<XML::Checker>.  Both modules share the same DTD validation code with libxml2
+and L<XML::LibXML> is easier to install.
 
 =head1 ERROR HANDLING
 
@@ -1993,16 +1996,25 @@ distribution which can be found at CPAN.)
 
 =head1 CAVEATS
 
-This is an alpha release. Almost everything is subject to change.
+This is an alpha release.  It is not actively maintained, patches are accepted and
+incoporated in new releases, but that's about it.  If you are interested in taking
+over maintimance of the module, email tjmather@tjmather.com.
+
+For a much faster, and correct DTD validator, see L<XML::LibXML>.  It
+uses the libxml2 library to validate DTD.
 
 =head1 AUTHOR
 
 Enno Derksen is the original author.
 
-Send bug reports, hints, tips, suggestions to T.J. Mather at
+Send patches to T.J. Mather at
 <F<tjmather@tjmather.com>>. 
 
 =head1 SEE ALSO
+
+L<XML::LibXML> provides validating parsers against a DTD
+and is recommended over XML::Checker since it uses the libxml2 library which is
+fast and well-tested.
 
 The XML spec (Extensible Markup Language 1.0) at L<http://www.w3.org/TR/REC-xml>
 

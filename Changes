@@ -1,5 +1,12 @@
 Change History:
 
+0.13 (tjmather) 9/11/2002
+- make parse return 1 (Steven Allen)
+- sub setModel: Generation of regexp goes wrong if an element has more than
+  62 members and any of these has cardinality other than 1:
+  Parentheses are required around each re token, because the tokens are
+  encoded as character pairs if there's 62 or more of them. (B Mills)
+
 0.12 (tjmather) 4/22/2002
 - Fixed bug with DTD alternation rules (Steven Allen)
 
